@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Login</h1>
+    <form id="loginForm">
+      <input name="username" placeholder="Username" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <div class="g-recaptcha" data-sitekey="6Le3ZQIsAAAAAKjaqUfC8WNDNoQ0ojFwNOU_xx1B"></div>
+      <button type="submit">Login</button>
+    </form>
+
+    <div id="loginResult" class="result"></div>
+
+    <p><a href="register.html">Don't have an account? Register</a></p>
+    <p><a href="reset_password.html">Forgot your password?</a></p>
+
+  </div>
+
+  <!-- reCAPTCHA -->
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+  <script>
+  const apiBase = 'http://localhost:3000';
+
+  // Utility for POST requests
+  async function post(path, body) {
+    const res = await fetch(apiBase + path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    return res.json();
+  }
+
+  document.getElementById('loginForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const f = e.target;
+    const loginResult = document.getElementById('loginResult');
+
+    // Get reCAPTCHA token
+    const recaptchaResponse = grecaptcha.getResponse();
+    if (!recaptchaResponse) {
+      alert('Please complete the reCAPTCHA!');
+      return;
+    }
+
+    // Send credentials + reCAPTCHA
+    const response = await post('/login', {
+      username: f.username.value.trim(),
+      password: f.password.value,
+      recaptcha: recaptchaResponse
+    });
+
+    // Handle server response
+    if (response.ok) {
+      sessionStorage.setItem('otpUser', f.username.value.trim());
+      window.location.href = 'otp.html';
+    } else {
+      loginResult.textContent = response.error || 'Login failed';
+      loginResult.className = 'result error';
+    }
+
+    grecaptcha.reset();
+  });
+  </script>
+</body>
+</html>

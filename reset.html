@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Reset Password</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <h1>Enter OTP & New Password</h1>
+    <form id="resetForm">
+        <input name="username" placeholder="Username" required>
+        <input name="otp" placeholder="OTP" required>
+        <input type="password" name="newPassword" placeholder="New Password" required>
+        <button type="submit">Reset Password</button>
+    </form>
+    <div id="result" class="result"></div>
+</div>
+
+<script>
+const apiBase = 'http://localhost:3000';
+async function post(path, body){
+    const res = await fetch(apiBase + path, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(body)
+    });
+    return res.json();
+}
+
+document.getElementById('resetForm').addEventListener('submit', async e=>{
+    e.preventDefault();
+    const f = e.target;
+    const r = await post('/reset-password', {
+        username: f.username.value.trim(),
+        otp: f.otp.value.trim(),
+        newPassword: f.newPassword.value
+    });
+    const resDiv = document.getElementById('result');
+    if(r.ok){
+        resDiv.textContent = r.message;
+        resDiv.className = 'result success';
+        setTimeout(()=> window.location.href = 'login.html', 1500);
+    } else {
+        resDiv.textContent = r.error || 'Reset failed';
+        resDiv.className = 'result error';
+    }
+});
+</script>
+</body>
+</html>

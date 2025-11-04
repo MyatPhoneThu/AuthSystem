@@ -1,0 +1,20 @@
+{
+  "asdf": {
+    "username": "asdf",
+    "email": "asdf@gmail.com",
+    "passwordHash": "$2b$10$TQ82RBVCfvtJGaRsxy7QTu0hQqCFMcPUwCrQOy16nn4pBTylJSMm.",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFzZGYiLCJlbWFpbCI6ImFzZGZAZ21haWwuY29tIiwiaWF0IjoxNzYyMjQ1MDg1LCJleHAiOjE3NjIyNDg2ODV9.lrrQeB63BMhrQhdnPYARsUrLJABLEq_AxwsrrlUzRlo"
+  },
+  "asdfg": {
+    "username": "asdfg",
+    "email": "asdfg@gmail.com",
+    "passwordHash": "$2b$10$R2IcE2HNt85lA2SWv8tZ3unQCsMlKjuXObrdNK1a49tBixeuFDKi.",
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFzZGZnIiwiZW1haWwiOiJhc2RmZ0BnbWFpbC5jb20iLCJpYXQiOjE3NjIyNDQ3NTcsImV4cCI6MTc2MjI0ODM1N30.2ettkyPppf6tH--82t1d7rX3Kt2udQBciz-ERTtvuOk"
+  },
+  "asdfgh": {
+    "username": "asdfgh",
+    "email": "zerothu506@gmail.com",
+    "passwordHash": "$2b$10$pGTYNmjdr7FTUA2m/wcsxeGagdtB.FteYwbhQJCcDC3DiwOa1hOaG",
+    "token": null
+  }
+}

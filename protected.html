@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Protected Page</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <h1>Welcome!</h1>
+    <p>This page is protected and only accessible after login.</p>
+
+    <label>Your Token:<br>
+        <textarea id="userToken" rows="4" readonly></textarea>
+    </label>
+
+    <pre id="userInfo" class="result"></pre>
+    <button id="logoutBtn">Logout</button>
+</div>
+
+<script>
+const token = localStorage.getItem('token');
+if(!token) window.location.href = 'login.html';
+
+document.getElementById('userToken').value = token;
+
+async function getUserInfo() {
+    const res = await fetch('http://localhost:3000/me', {
+        headers: { 'Authorization': 'Bearer ' + token }
+    });
+    const data = await res.json();
+    const info = document.getElementById('userInfo');
+    if(data.ok){
+        info.textContent = JSON.stringify(data.user, null, 2);
+        info.className = 'result success';
+    } else {
+        info.textContent = data.error;
+        info.className = 'result error';
+        localStorage.removeItem('token');
+        window.setTimeout(()=>{ window.location.href = 'login.html'; }, 2000);
+    }
+}
+
+getUserInfo();
+
+// Logout
+document.getElementById('logoutBtn').addEventListener('click', async ()=>{
+    const username = localStorage.getItem('username');
+    if(username){
+        await fetch('http://localhost:3000/logout', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({username})
+        });
+        localStorage.removeItem('token');
+        localStorage.removeItem('username');
+        window.location.href = 'login.html';
+    }
+});
+</script>
+</body>
+</html>

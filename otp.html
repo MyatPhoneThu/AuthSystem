@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Enter OTP</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <h1>Verify OTP</h1>
+    <form id="otpForm">
+        <input name="otp" placeholder="Enter OTP" required>
+        <button type="submit">Verify OTP</button>
+    </form>
+
+    <div id="otpResult" class="result"></div>
+</div>
+
+<script>
+const apiBase = 'http://localhost:3000';
+
+async function post(path, body){
+    const res = await fetch(apiBase + path, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(body)
+    });
+    return res.json();
+}
+
+document.getElementById('otpForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const f = e.target;
+    const username = sessionStorage.getItem('otpUser');
+    const otp = f.otp.value.trim();
+
+    const r = await post('/verify-otp', { username, otp });
+    const otpResult = document.getElementById('otpResult');
+
+    if(r.ok){
+        localStorage.setItem('token', r.token);
+        localStorage.setItem('username', username);
+        window.location.href = 'protected.html';
+    } else {
+        otpResult.textContent = r.error || r.message;
+        otpResult.className = 'result error';
+    }
+});
+</script>
+</body>
+</html>
